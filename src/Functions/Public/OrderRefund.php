@@ -18,7 +18,7 @@ class OrderRefund extends BaseClient
      */
     public function refund(array $params): array
     {
-        $this->app->baseParams['version'] = '3.1.0';
+        $this->app->baseParams['version'] = '3.1.2';
         return $this->curlRequest($params, 'post');
     }
 }
