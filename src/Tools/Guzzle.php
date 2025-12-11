@@ -1,32 +1,40 @@
 <?php
 
+declare(strict_types=1);
+/**
+ * This file is part of MineAdmin.
+ *
+ * @link     https://www.mineadmin.com
+ * @document https://doc.mineadmin.com
+ * @contact  root@imoi.cn
+ * @license  https://github.com/mineadmin/MineAdmin/blob/master/LICENSE
+ */
+
 namespace Media\Api\Tools;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\HandlerStack;
 use Hyperf\Codec\Json;
-use Media\Api\Constants\MediaErrorCode;
 use Hyperf\Guzzle\CoroutineHandler;
-use Psr\Http\Message\ResponseInterface;
+use Media\Api\Constants\MediaErrorCode;
 use Media\Api\Exception\PayException;
-use function Hyperf\Support\build_sql;
+use Psr\Http\Message\ResponseInterface;
 
 class Guzzle
 {
-    private Client $client;
-
     protected array $headers = [
         'Content-Type' => 'application/x-www-form-urlencoded',
     ];
 
+    private Client $client;
+
     /**
-     * @param array $options
      * @return $this
      */
     public function setHttpHandle(array $options = []): static
     {
-         $options['handler'] = HandlerStack::create(new CoroutineHandler());
+        $options['handler'] = HandlerStack::create(new CoroutineHandler());
 
         $options['headers'] = $this->headers;
 
@@ -46,9 +54,6 @@ class Guzzle
     }
 
     /**
-     * @param string $url
-     * @param array $params
-     * @return array
      * @throws GuzzleException
      */
     public function sendPost(string $url, array $params): array
@@ -58,32 +63,25 @@ class Guzzle
         return $this->getResult($result);
     }
 
-    /**
-     * @param ResponseInterface $response
-     * @return array
-     */
     private function getResult(ResponseInterface $response): array
     {
         $result = $response->getBody()->getContents();
         $statusCode = $response->getStatusCode();
 
-        if(str_contains($result, '{"') && str_contains($result, '"}')) {
+        if (str_contains($result, '{"') && str_contains($result, '"}')) {
             $result = Json::decode($result);
 
-            if (empty($result) || $statusCode != 200) {
+            if (empty($result) || $statusCode !== 200) {
                 throw new PayException(MediaErrorCode::ORDER_SERVICE_ERROR, '请求美的支付服务错误');
             }
 
-            if ($result['result_code'] != 1001) {
-                throw new PayException(MediaErrorCode::PAY_POST_ERROR, !empty($result['result_info']) && is_string($result['result_info']) ? $result['result_info'] : null);
+            if ($result['result_code'] !== 1001) {
+                throw new PayException(MediaErrorCode::PAY_POST_ERROR, ! empty($result['result_info']) && \is_string($result['result_info']) ? $result['result_info'] : null);
             }
-
         } else {
-
             return ['result' => $result];
         }
 
         return $result;
     }
-
 }
