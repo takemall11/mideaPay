@@ -1,20 +1,27 @@
 <?php
 
+declare(strict_types=1);
+/**
+ * This file is part of MineAdmin.
+ *
+ * @link     https://www.mineadmin.com
+ * @document https://doc.mineadmin.com
+ * @contact  root@imoi.cn
+ * @license  https://github.com/mineadmin/MineAdmin/blob/master/LICENSE
+ */
+
 namespace Media\Api\Functions\Wechat;
 
 use GuzzleHttp\Exception\GuzzleException;
 use Media\Api\Core\BaseClient;
 
 /**
- * 订单模块
+ * 订单模块.
  */
 class WechatPayShortcut extends BaseClient
 {
-
     /**
-     * 创建订单
-     * @param array $params
-     * @return array
+     * 创建订单.
      * @throws GuzzleException
      */
     public function createOrder(array $params): array
@@ -32,6 +39,4 @@ class WechatPayShortcut extends BaseClient
 
         return $this->curlRequest($params, 'post');
     }
-
-
 }

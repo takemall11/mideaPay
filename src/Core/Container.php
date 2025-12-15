@@ -1,37 +1,35 @@
 <?php
 
+declare(strict_types=1);
+/**
+ * This file is part of MineAdmin.
+ *
+ * @link     https://www.mineadmin.com
+ * @document https://doc.mineadmin.com
+ * @contact  root@imoi.cn
+ * @license  https://github.com/mineadmin/MineAdmin/blob/master/LICENSE
+ */
+
 namespace Media\Api\Core;
 
-
 /**
- * Class Container
- * @package Media\Api\Core
+ * Class Container.
  */
 class Container implements \ArrayAccess
 {
-    /**
-     * @var array
-     */
-    private array $instances = array();
-    /**
-     * @var array
-     */
-    private array $values = array();
+    private array $instances = [];
+
+    private array $values = [];
 
     /**
-     * @param $provider
      * @return $this
      */
-    public function serviceRegister($provider): Container
+    public function serviceRegister($provider): self
     {
         $provider->serviceProvider($this);
         return $this;
     }
 
-    /**
-     * @param mixed $offset
-     * @return mixed
-     */
     public function offsetGet(mixed $offset): mixed
     {
         if (isset($this->instances[$offset])) {
@@ -43,26 +41,15 @@ class Container implements \ArrayAccess
         return $val;
     }
 
-
-    /**
-     * @param mixed $offset
-     * @param mixed $value
-     */
     public function offsetSet(mixed $offset, mixed $value): void
     {
         $this->values[$offset] = $value;
     }
 
-    /**
-     * @param mixed $offset
-     */
-    public function offsetUnset(mixed $offset): void
-    {
-
-    }
+    public function offsetUnset(mixed $offset): void {}
 
     public function offsetExists($offset): bool
     {
-        return !empty($this->values[$offset]);
+        return ! empty($this->values[$offset]);
     }
 }

@@ -1,18 +1,23 @@
 <?php
 
+declare(strict_types=1);
+/**
+ * This file is part of MineAdmin.
+ *
+ * @link     https://www.mineadmin.com
+ * @document https://doc.mineadmin.com
+ * @contact  root@imoi.cn
+ * @license  https://github.com/mineadmin/MineAdmin/blob/master/LICENSE
+ */
+
 namespace Media\Api\Interfaces;
 
 use Media\Api\Core\Container;
 
 /**
- * Interface Provider
- * @package JavaReact\AlibabaOpen\interfaces
+ * Interface Provider.
  */
 interface Provider
 {
-    /**
-     * @param Container $container
-     * @return void
-     */
     public function serviceProvider(Container $container): void;
 }

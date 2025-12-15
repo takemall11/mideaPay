@@ -18,9 +18,7 @@ use Hyperf\Constants\Annotation\Constants;
 #[Constants]
 class MediaErrorCode extends AbstractConstants
 {
-
     public const SERVER_ERROR = 500;
-
 
     /**
      * @Message("Order Type Not Found")

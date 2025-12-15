@@ -1,18 +1,22 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: stbz
- * Date: 2020/6/17
- * Time: 4:00 PM
- */
 
+declare(strict_types=1);
+/**
+ * This file is part of MineAdmin.
+ *
+ * @link     https://www.mineadmin.com
+ * @document https://doc.mineadmin.com
+ * @contact  root@imoi.cn
+ * @license  https://github.com/mineadmin/MineAdmin/blob/master/LICENSE
+ */
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use Media\Api\MediaPay;
+
 use function Hyperf\Support\make;
 
-$mchId = "1010116442";
-$appSecret = "e1cf0ddcf6b47b59c351565d8ad717af";
+$mchId = '1010116442';
+$appSecret = 'e1cf0ddcf6b47b59c351565d8ad717af';
 
 // 下单接口
 $param = [
@@ -25,34 +29,34 @@ $param = [
     'is_virtual_product' => 'TRUE',
     'product_name' => 'test product',
     'product_info' => 'test product info',
-    'risk_params' => '{"device_version":"Mi-4c","imei":"355065053311001","cpu_info":"A5","mac":"00-50-56-C0-00-08","ip":"10.16.74.58"}'
+    'risk_params' => '{"device_version":"Mi-4c","imei":"355065053311001","cpu_info":"A5","mac":"00-50-56-C0-00-08","ip":"10.16.74.58"}',
 ];
 
 /** @var MediaPay $alipayClient */
 $alipayClient = make(MediaPay::class);
 
-## 初始化配置
+# # 初始化配置
 $alipayClient->setMchId($mchId);
 
 $response = $alipayClient->app->createOrder($param);
 
+var_dump($response);
+exit;
+// 订单详情
+// $param = [];
+// $sn = "20191115204845294762_6_1_1";//三级订单号
+// $response = $xrtClient->app->createOrder($sn)->get();
 
-var_dump($response);exit();
-//订单详情
-//$param = [];
-//$sn = "20191115204845294762_6_1_1";//三级订单号
-//$response = $xrtClient->app->createOrder($sn)->get();
-
-//物流查询
-//$param = [
+// 物流查询
+// $param = [
 //	'orderSn'=>'20200610111116', //商城订单号
 //	'sku'=>4339236
-//];
+// ];
 //
-//$response = $supplyClient->order->setApi("/v2/logistic")->get();
+// $response = $supplyClient->order->setApi("/v2/logistic")->get();
 
-//物流查询
-//$param = [];
-//$response = $supplyClient->order->setApi("/v2/logistic/firms")->get();
+// 物流查询
+// $param = [];
+// $response = $supplyClient->order->setApi("/v2/logistic/firms")->get();
 
-//var_dump($response);
+// var_dump($response);
