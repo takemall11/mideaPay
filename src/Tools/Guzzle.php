@@ -75,7 +75,7 @@ class Guzzle
                 throw new PayException(MediaErrorCode::ORDER_SERVICE_ERROR, '请求美的支付服务错误');
             }
 
-            if ($result['result_code'] !== "1001") {
+            if ($result['result_code'] !== '1001') {
                 throw new PayException(MediaErrorCode::PAY_POST_ERROR, ! empty($result['result_info']) && \is_string($result['result_info']) ? $result['result_info'] : null);
             }
         } else {
