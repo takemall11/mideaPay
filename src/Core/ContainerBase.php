@@ -46,6 +46,7 @@ class ContainerBase extends Container
     }
 
     /**
+     * @param mixed $id
      * @return mixed
      */
     public function __get($id)

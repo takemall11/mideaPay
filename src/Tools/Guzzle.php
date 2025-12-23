@@ -66,6 +66,7 @@ class Guzzle
     private function getResult(ResponseInterface $response): array
     {
         $result = $response->getBody()->getContents();
+
         $statusCode = $response->getStatusCode();
 
         if (str_contains($result, '{"') && str_contains($result, '"}')) {

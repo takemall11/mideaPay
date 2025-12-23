@@ -63,6 +63,7 @@ class BaseClient
         ];
 
         $result = $this->curlRequest($params, 'post');
+
         return $result['token'] ?? '';
     }
 
@@ -80,8 +81,10 @@ class BaseClient
         ];
         # # 合并公共参数
         $data = array_merge($data, $publicParams, $this->app->baseParams);
+
         # # 加密内容
         $data['sign'] = self::getSign($data);
+
         # # 开始请求
         /** @var Guzzle $client */
         $client = make(Guzzle::class);

@@ -22,6 +22,7 @@ class Container implements \ArrayAccess
     private array $values = [];
 
     /**
+     * @param mixed $provider
      * @return $this
      */
     public function serviceRegister($provider): self
