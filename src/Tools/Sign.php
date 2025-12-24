@@ -1,22 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Media\Api\Tools;
 
 use Hyperf\Codec\Json;
 use Media\Api\Constants\MediaErrorCode;
 use Media\Api\Exception\PayException;
+
 use function Hyperf\Config\config;
 
 trait Sign
 {
-
     private string $signHost = '';
+
     private string $signPath = '/rsa/sign.htm';
 
     /**
-     * 签名
-     * @param array $data
-     * @return string
+     * 签名.
      */
     public function getSign(array $data): string
     {
@@ -31,10 +32,21 @@ trait Sign
         return $this->getSignServer($sign);
     }
 
-    /**
-     * @param string $signKey
-     * @return string
-     */
+    public function sendPayHttp(array $params)
+    {
+        // 验证签名
+        $options = [
+            'http' => [
+                'method' => 'POST',
+                'header' => 'Content-type:application/x-www-form-urlencoded',
+                'content' => http_build_query($params),
+            ],
+        ];
+        $context = stream_context_create($options);
+
+        return file_get_contents($this->hostTest . $this->url, false, $context);
+    }
+
     private function getSignServer(string $signKey): string
     {
         $result = $this->sendSignHttp($signKey);
@@ -42,13 +54,12 @@ trait Sign
         $result = Json::decode($result);
 
         // 判定签名结果
-        if ($result['code'] != 1) {
+        if ($result['code'] !== "1") {
             throw new PayException(MediaErrorCode::PAY_SIGN_ERROR);
         }
 
         return $result['sign'];
     }
-
 
     private function sendSignHttp(string $signKey)
     {
@@ -57,26 +68,11 @@ trait Sign
             'http' => [
                 'method' => 'POST',
                 'header' => 'Content-type:application/x-www-form-urlencoded',
-                'content' => http_build_query(['source' => $signKey])
-            ]
+                'content' => http_build_query(['source' => $signKey]),
+            ],
         ];
         $context = stream_context_create($options);
 
         return file_get_contents($this->signHost . $this->signPath, false, $context);
-    }
-
-    public function sendPayHttp(array $params)
-    {
-        // 验证签名
-        $options = [
-            'http' => [
-                'method' => 'POST',
-                'header' => 'Content-type:application/x-www-form-urlencoded',
-                'content' => http_build_query($params)
-            ]
-        ];
-        $context = stream_context_create($options);
-
-        return file_get_contents($this->hostTest . $this->url, false, $context);
     }
 }
